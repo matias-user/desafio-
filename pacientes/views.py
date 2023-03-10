@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_list_or_404
+from django.http import HttpResponseBadRequest
 import requests
+from rut_chile import rut_chile
 
 from .models import Animal, Paciente
 
@@ -19,21 +21,47 @@ def registro(request):
     if request.method == 'POST':
         apellido_paterno = ""
         nombre = ""
+        uid_paciente = ""
+        nuevo_paciente = None
+        rut = request.POST.get('rut')
 
-        ''' Mejorable... Este código es por que
-            desde el form envio el uuid como value en el POST.
-            No encontre forma de enviar todo el objeto   
+        ''' 
+            Aquí es para obtener el nombre y el apellido paterno desde el get endpoint.   
         '''
         for paciente in pacientes['results']:
             if paciente.get('uuid') == request.POST.get('paciente'):
                 apellido_paterno = paciente.get('apellido_paterno')
                 nombre = paciente.get('nombre')
-
-        # Se crea el Paciente
-        nuevo_paciente = Paciente(nombre= nombre,apellido=apellido_paterno)
+                uid_paciente = paciente.get('uuid')
 
 
-        nuevo_paciente.save()
+
+        try:
+
+            # Verificar si ya esta creado el Paciente
+            existe_paciente = Paciente.objects.get(uid=uid_paciente)
+
+            if existe_paciente:
+                nuevo_paciente = existe_paciente
+
+            existe_rut = Animal.objects.get(uid=rut)
+            if existe_rut:
+                return HttpResponseBadRequest("El rut ingresado ya existe.")
+
+                 
+
+            if not rut_chile.is_valid_rut( rut ):
+                 return HttpResponseBadRequest("El rut ingresado no es valido")
+            
+        except Animal.DoesNotExist:
+            pass
+
+
+        except Paciente.DoesNotExist:
+                nuevo_paciente = Paciente(nombre= nombre,apellido=apellido_paterno,uid=uid_paciente)
+                nuevo_paciente.save()   
+                            
+
 
         data = {
             'nombre': request.POST.get('nombre'),
@@ -41,7 +69,7 @@ def registro(request):
             'sexo':request.POST.get('sexo'),
             'pais_origen':request.POST.get('origen'),
             'color':request.POST.get('color'),
-            'uid':request.POST.get('paciente'),
+            'uid':request.POST.get('rut'),
         }
         # Ahora se crea el animal
         nuevo_animal = Animal(
