@@ -9,7 +9,4 @@
 ## 8- cd desafio-
 ## 9- python manage.py runserver.
 
-
-
-
-
+Consideraciones: #Si se elimina la bbdd se debe crear un animal en el admin para que se muestre correctamente el template de inicio, ya que no alcanze hacer esa validación.
