@@ -1,11 +1,56 @@
+{% extends 'pacientes/base.html' %}
+
+{% block content %}
 <h1>Listado de animales!</h1>
 
-<ol>
-    {% for animal in animales %}
-    <li>
-        <h4>{{ animal.nombre }}</h4>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Raza
+        </th>
+        <th>
+            Sexo
+        </th>
+        <th>
+            Pais_origne
+        </th>
+        <th>
+            color
+        </th>
+        <th>
+            Paciente dueño
+        </th>
+    </tr>
 
-    </li>
+        {% for animal in animales %}
+        <tr>
+            <td>
+                {{ animal.nombre }}
 
-    {% endfor %}
-</ol>
+            </td>
+            <td>
+                {{ animal.raza }}
+            </td>
+            <td>
+                {{ animal.sexo }}
+
+            </td>
+            <td>
+                {{ animal.pais_origen }}
+
+            </td>
+            <td>
+                {{ animal.color }}
+
+            </td>
+        </tr>
+    
+    
+        {% endfor %}
+    
+</table>
+
+{% endblock %}  
