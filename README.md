@@ -7,6 +7,7 @@
 ## 6- python -m pip install rut_chile
 ## 7- git clone https://github.com/matias-user/desafio-.git
 ## 8- cd desafio-
+## 9- python manage.py runserver.
 
 
 
