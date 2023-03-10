@@ -1,11 +1,4 @@
 from django.shortcuts import render, get_list_or_404
-from django.http import HttpResponseBadRequest
-<<<<<<< HEAD
-import requests
-from rut_chile import rut_chile
-=======
->>>>>>> 52edec27ff7ecf34696be0b99f85be0fa8aee0b6
-
 import requests
 from rut_chile import rut_chile
 from .models import Animal
@@ -29,22 +22,10 @@ def registro(request):
     if request.method == 'POST':
         apellido_paterno = ""
         nombre = ""
-<<<<<<< HEAD
-        uid_paciente = ""
-        nuevo_paciente = None
-        rut = request.POST.get('rut')
 
-        ''' 
-            Aquí es para obtener el nombre y el apellido paterno desde el get endpoint.   
-=======
-        # Validación rapida para que rut tenga el formato.
-        if not rut_chile.is_valid_rut( request.POST.get('rut') ):
-            return HttpResponseBadRequest("Rut no valido")
-
-        ''' 
-            Se obtiene datos del paciente por POST con el uuid y nombre y apellido a traves del GET al endpoint dado.
-            Esto para posterior crear un paciente.  
->>>>>>> 52edec27ff7ecf34696be0b99f85be0fa8aee0b6
+        ''' Mejorable... Este código es por que
+            desde el form envio el uuid como value en el POST.
+            No encontre forma de enviar todo el objeto   
         '''
         for paciente in pacientes['results']:
             if paciente.get('uuid') == request.POST.get('paciente'):
@@ -67,22 +48,11 @@ def registro(request):
             if existe_rut:
                 return HttpResponseBadRequest("El rut ingresado ya existe.")
 
-                 
-
-            if not rut_chile.is_valid_rut( rut ):
-                 return HttpResponseBadRequest("El rut ingresado no es valido")
-            
-        except Animal.DoesNotExist:
-            pass
+        # Se crea el Paciente
+        nuevo_paciente = Paciente(nombre= nombre,apellido=apellido_paterno)
 
 
-        except Paciente.DoesNotExist:
-                nuevo_paciente = Paciente(nombre= nombre,apellido=apellido_paterno,uid=uid_paciente)
-                nuevo_paciente.save()   
-                            
-
-=======
->>>>>>> 52edec27ff7ecf34696be0b99f85be0fa8aee0b6
+        nuevo_paciente.save()
 
         data = {
             'nombre': request.POST.get('nombre'),
