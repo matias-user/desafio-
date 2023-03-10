@@ -1,0 +1,36 @@
+<h1>Registrar un animal</h1>
+
+<form action="{% url 'pacientes:registrar' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <label for="paciente">Paciente</label>
+
+        <select name="paciente" id="pacientes">
+            {% for paciente in pacientes.results %}
+            <option value="{{paciente.uuid}}">{{paciente.nombre}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="nombre">Nombre de animal</label>
+        <input type="input" name="nombre" id="nombre" value="Negra">
+
+        <label for="nombre">Raza</label>
+        <input type="input" name="raza" id="raza" value="Kiltro">
+
+        <label for="masculino">Masculino</label>
+        <input type="radio" name="sexo" id="masculino" value="H">
+        <label for="femenino">Femenino</label>
+        <input type="radio" name="sexo" id="femenino" value="M">
+
+        <label for="origen">Pais de origen</label>
+        <input type="input" name="origen" id="origen" value="Francia">
+
+        <label for="nombre">Color</label>
+        <input type="input" name="color" id="color" value="Negra">
+
+        <label for="nombre">RUT</label>
+        <input type="input" name="rut" id="rut" value="19281869-5">
+
+    </fieldset>
+    <input type="submit" value="Registrar">
+</form>
